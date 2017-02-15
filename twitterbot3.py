@@ -43,7 +43,7 @@ def getTemp():
     temp = temp[0]
     return temp
 
-#While loop looping once every hour.
+#While loop looping once every two hours.
 while True:
     newTemp = getTemp()
     api.update_status(".@ReilleyFord The time is: " + dateStr +  "\nThe temperature in Barrie is: " + newTemp + '°')
