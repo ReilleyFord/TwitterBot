@@ -5,7 +5,8 @@ from pytz import timezone
 import pytz
 
 
-#enter the corresponding information from your Twitter application:
+#enter the corresponding information from your Twitter application API
+#and your OpenWeatherMap API key
 OpenWeatherMap = pyowm.OWM('your OWM API key')
 CONSUMER_KEY = 'your twitter consumer API key'
 CONSUMER_SECRET = 'your twitter consumer secret API key'
