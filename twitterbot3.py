@@ -17,36 +17,27 @@ auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
 api = tweepy.API(auth)
 
 #setting the timezone to my local timezone. If i don't specifically set it to my
-#timezone and i use localdate then it will use the timezone from the heroku server
-#that i'm using, which is wrong.
+#timezone and i use localdate then it will use the timezone from the server
+#that i'm using, which is not EST.
 eastern = pytz.timezone('US/Eastern')
 dateFormat = '%I:%M %p'
 localdt = datetime.now(eastern)
 dateStr = localdt.strftime(dateFormat)
 
-#scraping data from openweathermap with pyowm import
-observation = OpenWeatherMap.weather_at_id(6167865)
-weather = observation.get_weather()
+#scraping data from openweathermap with pyowm import support for Barrie and Orillia
+barrieObserv = OpenWeatherMap.weather_at_id(6167865)
+orilliaObserv = OpenWeatherMap.weather_at_coords(44.61,-79.42)
+weather = orilliaObserv.get_weather()
 
-#simple function to get the temp and format it.
+#grabbing the temp dict and using the avg temp key
 def getTemp():
-    temp = str(weather.get_temperature('celsius'))
-    temp = temp.replace('temp_kf: None', '')
-    temp = temp.replace('{', '')
-    temp = temp.replace('}', '')
-    temp = temp.replace('\'', '')
-    temp = temp.replace('temp_max', '')
-    temp = temp.replace('temp_min', '')
-    temp = temp.replace('temp', '')
-    temp = temp.replace(':', '')
-    temp = temp.replace(' ','')
-    temp = temp.split(',', 1)
-    temp = temp[0]
-    return temp
+    temp = (weather.get_temperature('celsius'))
+    return ('%.2f' % temp["temp"])
 
-#While loop looping once every two hours.
+#looping infinitely and sleeping for four hours at a time.
 while True:
-    newTemp = getTemp()
-    api.update_status(".@ReilleyFord The time is: " + dateStr +  "\nThe temperature in Barrie is: " + newTemp + '°')
-    time.sleep(7200)
+    temp = getTemp()
+    api.update_status(".@ReilleyFord The time is: " + dateStr + "\nThe temperature in Orillia is: " + temp + '°')
+    time.sleep(14400)
+
     
